@@ -68,10 +68,10 @@ python run.py --config config.ini -o output  （配置完config.ini之后提交�
      
   5. delimiter
      注释gtf文件中第一列的多倍体同源染色体的分割符，例子，gtf中有四套同源染色体，第一列分别为：
-     > chr01_1
-     > chr01_2
-     > chr03_3
-     > chr04_4
+     chr01_1、
+     chr01_2、
+     chr03_3、
+     chr04_4、
      则delimiter= _
      
 - [6-AlleleFinder]
