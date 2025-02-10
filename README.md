@@ -86,15 +86,12 @@ python run.py --config config.ini -o output  （配置完config.ini之后提交�
 
 config.ini中注意格式问题，有的需要加双引号，有的不需要加，按照参考的config.ini格式添加。
 
-[5-GQ-mapping]
+[5-express]
 
-flnc_fq_file这里是如果前面的数据已经通过别的软件处理好，整个流程从5-mapping开始，则flnc_fq_file作为输入文件，从此处开始。（前提是[4-refine]中并没有处理好的reads数据）
+flnc_fa_file这里是如果前面的数据已经通过别的软件处理好,整个流程从5-express开始,则flnc_fa_file作为输入文件，从此处开始。(前提是[4-refine]中并没有处理好的reads数据，否则会自动寻找上一步的输出文件做为下一步的输入文件)
 
-[7-express]
-
-flnc_fa_file这里是如果前面的数据已经通过别的软件处理好,整个流程从7-express开始,则flnc_fa_file作为输入文件，从此处开始。(前提是[4-refine]中并没有处理好的reads数据)
 该步骤需要内存非常大，如果出现内存报错，建议降低该步骤的线程数。
 
-[8-AlleleFinder]
+[6-AlleleFinder]
 
 具体使用教程参照https://github.com/sc-zhang/AlleleFinder。
