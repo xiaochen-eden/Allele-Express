@@ -27,7 +27,19 @@ python run.py --config config.ini -o output  （配置完config.ini之后提交�
 
 - module_availability：true/false  表示是否需要运行该步骤，默认情况下，subreads_to_hifi为false,AlleleFinder为false,其他均为true（输入数据的位置请均使用绝对路径）。
   
-  其中subreads_to_hifi控制[0-ccs]步骤，read_segmentation控制[1-read_segmentation]步骤，split_QC控制[2-split_QC]步骤，demultiplex控制[3-demultiplex]步骤，refine控制[4-refine]步骤，ref_transcript_quant控制[5-express]步骤，AlleleFinder控制[6-AlleleFinder]步骤。请自行根据下机数据选择从某一步骤继续向下运行。
+  其中subreads_to_hifi控制[0-ccs]步骤
+  
+  read_segmentation控制[1-read_segmentation]步骤
+
+  split_QC控制[2-split_QC]步骤
+
+  demultiplex控制[3-demultiplex]步骤
+
+  refine控制[4-refine]步骤
+
+  ref_transcript_quant控制[5-express]步骤
+
+  AlleleFinder控制[6-AlleleFinder]步骤。请自行根据下机数据选择从某一步骤继续向下运行。
   
 - ref_data 请分别输入参考cds（fa格式）、基因组（fa格式）、注释（gtf格式）、转录本（fa格式）
 
