@@ -14,21 +14,21 @@ Tools for Gene Expression Quantification in Polyploid Species
 - R 4.4.0(parallel、GenomicFeatures、tidyverse、data.table)
 - mmseqs
 - minimap2
-- Allelefinder及其依赖
+- Allelefinder及其依赖(具体使用教程参照https://github.com/sc-zhang/AlleleFinder)
 
 ### 2、安装与运行
 
 ```shell
-export PATH=/xx/:$PATH
-python run.py --config config.ini -o output  （配置完config.ini之后提交命令，根据contig.ini中设置的线程数多线程运行）
+export PATH=/xx/scripts:$PATH
+python run.py --config config.ini -o output  （配置完config.ini之后提交命令，根据contig.ini中设置的线程数多线程运行,可以每个步骤单独调整线程数）
 ```
 
 ### 3、config.ini
 
-- module_availability：true/false  表示是否需要运行该步骤，默认情况下，subreads_to_hifi为false,其他均为true（输入数据的位置请使用绝对路径）
-- ref_data:参考基因组等数据
+- module_availability：true/false  表示是否需要运行该步骤，默认情况下，subreads_to_hifi为false,其他均为true（输入数据的位置请均使用绝对路径）
+- ref_data 请分别输入参考cds（fa格式）、基因组（fa格式）、注释（gtf格式）、转录本（fa格式）
 
-- [0-ccs]: 将subreads生成hifi reads,一般不使用
+- [0-ccs]: 将subreads生成hifi reads,一般不使用，根据下机数据类型判断
 
   > 1. input_file : 输入的subreads文件，bam格式。比如：input_file = "subreads.bam"
   > 2. user_parameters：用户自己需要添加的参数，比如：user_parameters = "--minZScore -5"
@@ -50,30 +50,20 @@ python run.py --config config.ini -o output  （配置完config.ini之后提交�
 
 - [4-refine]：去除polyA尾和人工引物的多聚体
 
-> 参数与isoseq3 refine一致
+> 参数与isoseq3 refine一致，此处需输入的引物序列与[3-demultiplex]输入的引物序列一致。
 
-- [5-GQ-mapping]：比对至参考基因组(isoquant定量部分)
-
-> 1. sampling_proportions：按比例抽样用来评估比对结果。例子："0.05 0.1 0.2 0.4 0.6 0.8 1.0"
-> 2. flnc_fq_file：此处建议置为空，后面有详细解释。
-
-- [6-GQ-Quantitative Analysis]：定量（isoquant定量部分）
-
-> 1. data_type：数据的类型。例子："pacbio_ccs"
-> 2. isoquant_env_path：isoquant的环境。例子：/public/home/xx/envs/isoquant
-
-- [7-express]：allele-express部分
+- [5-express]：allele-express部分
   1. r_script_path = /public/home/xx/all_script
      是R脚本的路径，因为执行了多次调用，帮助脚本找到调用的R脚本
   2. sampling_proportions
      按比例抽样用来评估比对结果。例子："0.05 0.1 0.2 0.4 0.6 0.8 1.0"
   3. flnc_fa_file
-     请看注意事项，默认为空
+     默认为空，详见### 4、注意事项
   4. mmseqs2_env_path
      mmseqs2的路径，例子：mmseqs2_env_path = /xx/envs/mmseqs2
   5. delimiter
      注释gtf文件中第一列的多倍体同源染色体的分割符，例子，gtf中有四套同源染色体，第一列分别为chr01_1 chr01_2 chr03_3 chr04_4，则delimiter= _
-- [8-AlleleFinder]
+- [6-AlleleFinder]
   assembly_gff3、assembly_cds、assembly_genome 为需要鉴定等位的基因组数据。
   需要注意[ref_data]模块中，ref_cds与ref_gff3为8-AlleleFinder的参考数据（一般为一套mono数据）。
   NUM_ALLELE：倍性
@@ -88,8 +78,9 @@ flnc_fq_file这里是如果前面的数据已经通过别的软件处理好，�
 
 [7-express]
 
-flnc_fa_file这里是如果前面的数据已经通过别的软件处理好,整个流程从7-express开始,则flnc_fa_file作为输入文件，从此处开始。(前提是[4-refine]中并没有处理好的reads数据
+flnc_fa_file这里是如果前面的数据已经通过别的软件处理好,整个流程从7-express开始,则flnc_fa_file作为输入文件，从此处开始。(前提是[4-refine]中并没有处理好的reads数据)
+该步骤需要内存非常大，如果出现内存报错，建议降低该步骤的线程数。
 
 [8-AlleleFinder]
 
-具体使用教程以https://github.com/sc-zhang/AlleleFinder为准。
+具体使用教程参照https://github.com/sc-zhang/AlleleFinder。
