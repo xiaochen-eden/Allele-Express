@@ -80,11 +80,14 @@ python run.py --config config.ini -o output  （配置完config.ini之后提交�
 
 ### 4、注意事项
 
-config.ini中注意格式问题，有的需要加双引号，有的不需要加，按照我给的格式添加。
+config.ini中注意格式问题，有的需要加双引号，有的不需要加，按照参考的config.ini格式添加。
 
 [5-GQ-mapping]
+
 flnc_fq_file这里是如果前面的数据已经通过别的软件处理好，整个流程从5-mapping开始，则flnc_fq_file作为输入文件，从此处开始。（前提是[4-refine]中并没有处理好的reads数据）
+
 [7-express]
+
 flnc_fa_file这里是如果前面的数据已经通过别的软件处理好,整个流程从7-express开始,则flnc_fa_file作为输入文件，从此处开始。(前提是[4-refine]中并没有处理好的reads数据
 
 [8-AlleleFinder]
