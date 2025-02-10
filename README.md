@@ -41,7 +41,7 @@ python run.py --config config.ini -o output  （配置完config.ini之后提交�
 
   AlleleFinder控制[6-AlleleFinder]步骤。请自行根据下机数据选择从某一步骤继续向下运行。
   
-- ref_data 请分别输入参考cds（fa格式）、基因组（fa格式）、注释（gtf格式）、转录本（fa格式）
+- ref_data 请分别输入参考cds（fa格式）、基因组（fa格式）、注释（标准gtf格式，建议运行前使用AGAT (Another GTF/GFF Analysis Toolkit) 软件进行格式修复）、转录本（fa格式）
 
 - [0-ccs]: 将subreads生成hifi reads,一般不使用，根据下机数据类型判断
 
