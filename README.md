@@ -1,8 +1,5 @@
 # Allele-Express
 Tools for Gene Expression Quantification in Polyploid Species
-
-# QuantMAS
-
 ### 1、依赖
 
 - ccs（ccs 6.4.0 (commit v6.4.0)）
