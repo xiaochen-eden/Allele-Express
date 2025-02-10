@@ -53,20 +53,29 @@ python run.py --config config.ini -o output  （配置完config.ini之后提交�
 > 参数与isoseq3 refine一致，此处需输入的引物序列与[3-demultiplex]输入的引物序列一致。
 
 - [5-express]：allele-express部分
+
   1. r_script_path = /public/home/xx/all_script
      是R脚本的路径，因为执行了多次调用，帮助脚本找到调用的R脚本
+     
   2. sampling_proportions
      按比例抽样用来评估比对结果。例子："0.05 0.1 0.2 0.4 0.6 0.8 1.0"
+     
   3. flnc_fa_file
-     默认为空，详见### 4、注意事项
+     默认为空，详见下面注意事项
+     
   4. mmseqs2_env_path
      mmseqs2的路径，例子：mmseqs2_env_path = /xx/envs/mmseqs2
+     
   5. delimiter
      注释gtf文件中第一列的多倍体同源染色体的分割符，例子，gtf中有四套同源染色体，第一列分别为chr01_1 chr01_2 chr03_3 chr04_4，则delimiter= _
+     
 - [6-AlleleFinder]
-  assembly_gff3、assembly_cds、assembly_genome 为需要鉴定等位的基因组数据。
-  需要注意[ref_data]模块中，ref_cds与ref_gff3为8-AlleleFinder的参考数据（一般为一套mono数据）。
-  NUM_ALLELE：倍性
+
+> assembly_gff3、assembly_cds、assembly_genome 为需要鉴定等位的基因组数据。
+
+> 要注意[ref_data]模块中，ref_cds与ref_gff3为8-AlleleFinder的参考数据（一般为一套mono数据）。
+
+> NUM_ALLELE：倍性
 
 ### 4、注意事项
 
