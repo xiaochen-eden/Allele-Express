@@ -91,9 +91,9 @@ python run.py --config config.ini -o output  （配置完config.ini之后提交�
      
 - [6-AlleleFinder]用于鉴定多倍体的等位基因。该步骤可以独立运行。
 
-> assembly_gff3、assembly_cds、assembly_genome 为需要鉴定等位的基因组数据。
+> polyploid_gff3、polyploid_cds 为需要鉴定等位的基因组数据。
 
-> 要注意[ref_data]模块中，ref_cds与ref_gff3为8-AlleleFinder的参考数据（一般为一套mono数据）。
+> ref_genome、ref_cds与ref_gff3为8-AlleleFinder的参考数据（一般为一套mono数据）。
 
 > NUM_ALLELE：倍性
 
