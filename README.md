@@ -105,12 +105,12 @@ Each step can independently adjust the number of threads.)
 
 Be careful about the formatting in the config.ini file. Some sections require double quotes, while others do not. Follow the format of the referenced config.ini file for adding. 
 
-[5-express]
+- [5-express]
 
 flnc_fa_file: The flnc_fa_file is initially empty. If quantitative analysis is directly performed from this step, then it should be used as the input file. (If it is empty, the program will automatically search for the output file from [4-refine] as the input for this parameter) 
 
 This step requires a very large amount of memory. If there is a memory error, it is recommended to reduce the number of threads in this step. 
 
-[6-AlleleFinder]
+- [6-AlleleFinder]
 
 For detailed usage instructions, please refer to https://github.com/sc-zhang/AlleleFinder.
