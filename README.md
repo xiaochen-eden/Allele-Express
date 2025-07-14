@@ -1,6 +1,6 @@
 # Allele-Express
 Tools for Gene Expression Quantification in Polyploid Species
-### 1、依赖
+### 1、Dependencies
 
 - ccs（ccs 6.4.0 (commit v6.4.0)）
 - skera（skera 1.2.0）
@@ -10,103 +10,107 @@ Tools for Gene Expression Quantification in Polyploid Species
 - lima （lima 2.9.0）
 - isoseq3  （isoseq 4.0.0 (commit v4.0.0)）
 - isoquant  （IsoQuant 3.4.1）
-- python 3.10.13(pandas、matplotlib、numpy、seaborn、subprocess、configparser、argparse、string、collections、mpl_toolkits.axes_grid1.inset_locator、pathlib、random、pysam)
-- R 4.4.0(parallel、GenomicFeatures、tidyverse、data.table)
+- python 3.10.13 (pandas、matplotlib、numpy、seaborn、subprocess、configparser、argparse、string、collections、mpl_toolkits.axes_grid1.inset_locator、pathlib、random、pysam)
+- R 4.4.0 (parallel、GenomicFeatures、tidyverse、data.table)
 - mmseqs
 - minimap2
-- Allelefinder及其依赖(具体使用教程参照https://github.com/sc-zhang/AlleleFinder)
+- Allelefinder (For detailed usage instructions, please refer to https://github.com/sc-zhang/AlleleFinder)
 
-### 2、安装与运行
+### 2、 Installation and run
 
 ```shell
 export PATH=/xx/scripts:$PATH
-python run.py --config config.ini -o output  （配置完config.ini之后提交命令，根据contig.ini中设置的线程数多线程运行,可以每个步骤单独调整线程数）
+python run.py --config config.ini -o output
+(After configuring config.ini, execute the command. Based on the number of threads set in config.ini, it will run in multiple threads.
+Each step can independently adjust the number of threads.)
 ```
 
 ### 3、config.ini
 
-- module_availability：true/false  表示是否需要运行该步骤，默认情况下，subreads_to_hifi为false,AlleleFinder为false,其他均为true（输入数据的位置请均使用绝对路径）。
+- module_availability: true/false  Indicates whether this step needs to be executed. By default, subreads_to_hifi is false, AlleleFinder is false, and all others are true (please use absolute paths for the input data locations)。
   
-  其中subreads_to_hifi控制[0-ccs]步骤
+  subreads_to_hifi: true/false (Control [0-ccs] module)
   
-  read_segmentation控制[1-read_segmentation]步骤
+  read_segmentation: true/false (Control [1-read_segmentation] module)
 
-  split_QC控制[2-split_QC]步骤
+  split_QC: true/false (Control [2-split_QC] module)
 
-  demultiplex控制[3-demultiplex]步骤
+  demultiplex: true/false (Control [3-demultiplex] module)
 
-  refine控制[4-refine]步骤
+  refine: true/false (Control [4-refine] module)
 
-  ref_transcript_quant控制[5-express]步骤
+  ref_transcript_quant: true/false (Control [5-express] module)
 
-  AlleleFinder控制[6-AlleleFinder]步骤。请自行根据下机数据选择从某一步骤继续向下运行。
+  AlleleFinder: true/false (Control [6-AlleleFinder] module)
+
+  Please select the appropriate step based on the data preprocessing situation and go ahead with the analysis.
   
-- ref_data 请分别输入参考cds（fa格式）、基因组（fa格式）、注释（标准gtf格式，建议运行前使用AGAT (Another GTF/GFF Analysis Toolkit) 软件进行格式修复）、转录本（fa格式）
+- ref_data: Please input the reference CDS (in FA format), genome (in FA format), annotation (in standard GTF format, it is recommended to use AGAT (Another GTF/GFF Analysis Toolkit) software for format correction before running), and transcript (in FA format), respectively.
 
-- [0-ccs]: 将subreads生成hifi reads,一般不使用，根据下机数据类型判断
+- [0-ccs]: Generate HIFI reads from subreads. This process is usually not employed. It depends on the type of sequencing data obtained.
 
-  > 1. input_file : 输入的subreads文件，bam格式。比如：input_file = "subreads.bam"
-  > 2. user_parameters：用户自己需要添加的参数，比如：user_parameters = "--minZScore -5"
-  > 3. 其他参数与ccs软件的参数一致。
+  > 1. input_file: The input subreads file is in BAM format. For example: input_file = "subreads.bam"
+  > 2. user_parameters： Parameters that the user needs to add themselves, such as: user_parameters = "--minZScore -5"
+  > 3. The other parameters are identical to those of the CCS software.
 
 
-- [1-read_segmentation]：拆分MAS接头
+- [1-read_segmentation]： Split the MAS connector
 
-> 1. primer_file：输入MAS的接头序列  比如：primer_file ="/public/home/xx/mas8_primers.fasta"
-> 2. input_file：输入hifi reads的bam文件  比如：input_file ="/public/home/xx/xx.bam"
+  > 1. primer_file： input the connection sequence of MAS. For example: primer_file ="/public/home/xx/mas8_primers.fasta"
+  > 2. input_file： input the BAM file of "hifi reads", for example: input_file ="/public/home/xx/xx.bam"
 
-- [2-split_QC]：对上一步拆分结果进行评估
+- [2-split_QC]： Evaluate the results of the previous step of splitting
 
-> cds_sample_number：抽样的cds个数。例子：cds_sample_number = 50000
+  > 1. cds_sample_number： The number of CDS samples. Example: cds_sample_number = 50000
 
-- [3-demultiplex]：去除引物序列
+- [3-demultiplex]： Remove the primer sequence
 
-> primer_file2：输入5'3'的引物序列。例子：primer_file2 ="/public/home/xx/xx.primer.fasta"
+  > 1. primer_file2：Enter a primer sequence of 5'3'. Example: primer_file2 ="/public/home/xx/xx.primer.fasta"
 
-- [4-refine]：去除polyA尾和人工引物的多聚体
+- [4-refine]： Polymers with removed polyA tails and artificial primers
 
-> 参数与isoseq3 refine一致，此处需输入的引物序列与[3-demultiplex]输入的引物序列一致。
+  > 1. The parameters are consistent with isoseq3 refine. The primer sequence to be entered here is the same as that entered in [3-demultiplex].
 
-- [5-express]：allele-express部分
+- [5-express]：allele-express section
 
-  1. r_script_path = /public/home/xx/all_script
-     是R脚本的路径，因为执行了多次调用，帮助脚本找到调用的R脚本
+  > 1. r_script_path = /public/home/xx/all_script
+     It is the path of the R script. Because it has been called multiple times, it helps the script find the called R script
      
-  2. sampling_proportions
-     按比例抽样用来评估比对结果。例子："0.05 0.1 0.2 0.4 0.6 0.8 1.0"
+  > 2. sampling_proportions
+     Proportional sampling is used to evaluate the comparison results. Example: "0.05 0.1 0.2 0.4 0.6 0.8 1.0"
      
-  3. flnc_fa_file
-     默认为空，详见下面注意事项
+  > 3. flnc_fa_file
+     By default, it is empty. For details, please refer to the following precautions
      
-  4. mmseqs2_env_path
-     mmseqs2的路径，例子：mmseqs2_env_path = /xx/envs/mmseqs2
+  > 4. mmseqs2_env_path
+    The path of mmseqs2, for example: mmseqs2_env_path = /xx/envs/mmseqs2
      
-  5. delimiter
-     注释gtf文件中第一列的多倍体同源染色体的分割符，例子，gtf中有四套同源染色体，第一列分别为：
-     chr01_1、
-     chr01_2、
-     chr03_3、
-     chr04_4、
-     则delimiter= _
+  > 5. delimiter
+     Annotate the delimiters of polyploid homologous chromosomes in the first column of the GTF file. For example, there are four sets of homologous chromosomes in the gtf, and the first column is respectively:
+       chr01_1、
+       chr01_2、
+       chr03_3、
+       chr04_4、
+       Then delimiter= _
      
-- [6-AlleleFinder]用于鉴定多倍体的等位基因。该步骤可以独立运行。
+- [6-AlleleFinder] is used to identify the alleles of polyploids. This step can run independently.
 
-> polyploid_gff3、polyploid_cds 为需要鉴定等位的注释、cds数据。
+  > 1. polyploid_gff3 and polyploid_cds are annotations and cds data for which alleles need to be identified.
 
-> ref_genome、ref_cds与ref_gff3为8-AlleleFinder的参考数据（一般为一套mono数据）。
+  > 2. ref_genome, ref_cds, and ref_gff3 are reference data for 8-AlleleFinder (usually a set of mono data).
 
-> NUM_ALLELE：倍性
+  > 3. NUM_ALLELE： Ploidy of species
 
-### 4、注意事项
+### 4、Important Notes 
 
-config.ini中注意格式问题，有的需要加双引号，有的不需要加，按照参考的config.ini格式添加。
+Be careful about the formatting in the config.ini file. Some sections require double quotes, while others do not. Follow the format of the referenced config.ini file for adding. 
 
 [5-express]
 
-flnc_fa_file这里是如果前面的数据已经通过别的软件处理好,整个流程从5-express开始,则flnc_fa_file作为输入文件，从此处开始。(前提是[4-refine]中并没有处理好的reads数据，否则会自动寻找上一步的输出文件做为下一步的输入文件)
+flnc_fa_file: The flnc_fa_file is initially empty. If quantitative analysis is directly performed from this step, then it should be used as the input file. (If it is empty, the program will automatically search for the output file from [4-refine] as the input for this parameter) 
 
-该步骤需要内存非常大，如果出现内存报错，建议降低该步骤的线程数。
+This step requires a very large amount of memory. If there is a memory error, it is recommended to reduce the number of threads in this step. 
 
 [6-AlleleFinder]
 
-具体使用教程参照https://github.com/sc-zhang/AlleleFinder。
+For detailed usage instructions, please refer to https://github.com/sc-zhang/AlleleFinder.
