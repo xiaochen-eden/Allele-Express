@@ -1,6 +1,11 @@
 # Allele-Express
-Tools for Gene Expression Quantification in Polyploid Species
-### 1、Dependencies
+a novel algorithm specifically designed for ASE analysis in haplotype-resolved genome assemblies. 
+## Table of contents
+- [Prerequisites & Environment Setup](#prerequisites--environment-setup)
+- [Getting Started](#getting-started)
+- [Configuration Guide](#configuration-guide)
+- [Usage Guidelines & Caveats](#usage-guidelines--caveats)
+## 1、Prerequisites & Environment Setup
 
 - ccs（ccs 6.4.0 (commit v6.4.0)）
 - skera（skera 1.2.0）
@@ -9,14 +14,14 @@ Tools for Gene Expression Quantification in Polyploid Species
 - bedtools （bedtools v2.31.1）
 - lima （lima 2.9.0）
 - isoseq3  （isoseq 4.0.0 (commit v4.0.0)）
-- isoquant  （IsoQuant 3.4.1）
+- isoquant  （IsoQuant 3.4.1）()
 - python 3.10.13 (pandas、matplotlib、numpy、seaborn、subprocess、configparser、argparse、string、collections、mpl_toolkits.axes_grid1.inset_locator、pathlib、random、pysam)
 - R 4.4.0 (parallel、GenomicFeatures、tidyverse、data.table)
 - mmseqs
 - minimap2
 - Allelefinder (For detailed usage instructions, please refer to https://github.com/sc-zhang/AlleleFinder)
 
-### 2、 Installation and run
+## 2、 Getting Started
 
 ```shell
 export PATH=/xx/scripts:$PATH
@@ -25,27 +30,29 @@ python run.py --config config.ini -o output
 Each step can independently adjust the number of threads.)
 ```
 
-### 3、config.ini
+## 3、Configuration Guide
+Customize the application behavior by modifying the following parameters in config.ini:
 
-- module_availability: true/false  Indicates whether this step needs to be executed. By default, subreads_to_hifi is false, AlleleFinder is false, and all others are true (please use absolute paths for the input data locations)。
+### module_availability: true/false  
+Indicates whether this step needs to be executed. By default, subreads_to_hifi is false, AlleleFinder is false, and all others are true (please use absolute paths for the input data locations)。
   
-  subreads_to_hifi: true/false (Control [0-ccs] module)
+### subreads_to_hifi: true/false (Control [0-ccs] module)
   
-  read_segmentation: true/false (Control [1-read_segmentation] module)
+### read_segmentation: true/false (Control [1-read_segmentation] module)
 
-  split_QC: true/false (Control [2-split_QC] module)
+### split_QC: true/false (Control [2-split_QC] module)
 
-  demultiplex: true/false (Control [3-demultiplex] module)
+### demultiplex: true/false (Control [3-demultiplex] module)
 
-  refine: true/false (Control [4-refine] module)
+### refine: true/false (Control [4-refine] module)
 
-  ref_transcript_quant: true/false (Control [5-express] module)
+### ref_transcript_quant: true/false (Control [5-express] module)
 
-  AlleleFinder: true/false (Control [6-AlleleFinder] module)
+### AlleleFinder: true/false (Control [6-AlleleFinder] module)
 
   Please select the appropriate step based on the data preprocessing situation and go ahead with the analysis.
   
-- ref_data: Please input the reference CDS (in FA format), genome (in FA format), annotation (in standard GTF format, it is recommended to use AGAT (Another GTF/GFF Analysis Toolkit) software for format correction before running), and transcript (in FA format), respectively.
+- ref_data: Please input the reference CDS (in FA format), genome (in FA format), annotation (in standard GTF format, it is recommended to use AGAT (Another GTF/GFF Analysis Toolkit) software for format correction before running), and transcript (in FA format. For genes with multiple isoforms, the longest transcript per gene is selected as the representative sequence to simplify analysis), respectively.
 
 - [0-ccs]: Generate HIFI reads from subreads. This process is usually not employed. It depends on the type of sequencing data obtained.
 
@@ -101,8 +108,8 @@ Each step can independently adjust the number of threads.)
 
   > 3. NUM_ALLELE： Ploidy of species
 
-### 4、Important Notes 
-
+### 4、Usage Guidelines & Caveats
+Before deploying, please review these critical constraints and best practices:
 Be careful about the formatting in the config.ini file. Some sections require double quotes, while others do not. Follow the format of the referenced config.ini file for adding. 
 
 - [5-express]
@@ -114,3 +121,12 @@ This step requires a very large amount of memory. If there is a memory error, it
 - [6-AlleleFinder]
 
 For detailed usage instructions, please refer to https://github.com/sc-zhang/AlleleFinder.
+
+### 5、Output Files Documentation
+
+File List
+
+- trans2gene.txt
+- trans2trans.txt
+- transcript_counts.txt
+- gene_counts.txt
